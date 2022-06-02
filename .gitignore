@@ -1,3 +1,8 @@
+# MJ add
+*.pdf
+*.xml
+*.iml
+.idea
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
