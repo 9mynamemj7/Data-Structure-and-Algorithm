@@ -1,9 +1,14 @@
-# 자료구조 및 알고리즘
+# 자료구조
 
 > 알고리즘은 요리법, 자료구조는 재료
 > 
 
 # 강의 계획
+
+- 메모
+    
+    ![Untitled](Untitled.png)
+    
 
 ## 수업 목표
 
@@ -695,3 +700,289 @@ print(f'식사 손님: {data}\n')
 
 print(f'출구 --<--  {queue}  --<-- 입구')
 ```
+
+## 큐의 일반 구현
+
+- 큐 초기화, 데이터 삽입/추출/확인
+
+```python
+## 함수
+def isQueueFull():
+    global SIZE, queue, front, rear
+    if (rear != SIZE-1):
+        return False
+    elif (rear == SIZE -1 and front == -1):
+        return True
+    else:
+        for i in range(front+1, SIZE, 1):
+            queue[i-1]  = queue[i]
+            queue[i] = None
+        front -= 1
+        rear -= 1
+        return False
+
+def enQueue(data):
+    global SIZE, queue, front, rear
+    if isQueueFull():
+        print('큐 꽉!')
+        return
+    rear += 1
+    queue[rear] = data
+
+def isQueueEmpty():
+    global SIZE, queue, front, rear
+    if front == rear:
+        return True
+    else:
+        return False
+
+def deQueue():
+    global SIZE, queue, front, rear
+    if (isQueueEmpty()):
+        print('큐 텅!')
+        return None
+    front += 1
+    data = queue[front]
+    queue[front] = None
+    return data
+
+def peek() :
+    global SIZE, queue, front, rear
+    if (isQueueEmpty()) :
+        print('큐 텅~~')
+        return None
+    return queue[front+1]
+
+## 전역
+SIZE = 5
+queue = [None for _ in range(SIZE)]
+front = rear = -1
+
+## 메인
+
+enQueue('화사')
+enQueue('솔라')
+enQueue('문별')
+enQueue('휘인')
+enQueue('선미')
+print(f'출구 --<--  {queue}  --<-- 입구')
+# enQueue('민중')
+# print(f'출구 --<--  {queue}  --<-- 입구')
+
+retData = deQueue()
+print('디큐 ==>', retData)
+retData = deQueue()
+print('디큐 ==>', retData)
+
+print(f'출구 --<--  {queue}  --<-- 입구')
+
+# print('다음 예정 손님 =>', peek())
+# print(f'출구 --<--  {queue}  --<-- 입구')
+
+enQueue('길동')
+print(f'출구 --<--  {queue}  --<-- 입구')
+
+enQueue('소희')
+print(f'출구 --<--  {queue}  --<-- 입구')
+```
+
+## 큐의 응용
+
+- 원형 큐
+
+```python
+## 함수
+def isQueueFull() :
+    global SIZE, queue, front, rear
+    if ( (rear+1)%SIZE == front) :
+        return True
+    else :
+        return False
+
+def enQueue(data) :
+    global SIZE, queue, front, rear
+    if (isQueueFull()) :
+        print('큐 꽉!')
+        return
+    rear = (rear + 1) % SIZE
+    queue[rear] = data
+
+def isQueueEmpty() :
+    global SIZE, queue, front, rear
+    if (front == rear) :
+        return True
+    else :
+        return False
+
+def deQueue() :
+    global SIZE, queue, front, rear
+    if (isQueueEmpty()) :
+        print('큐 텅~~')
+        return None
+    front = (front + 1) % SIZE
+    data = queue[front]
+    queue[front] = None
+    return data
+
+def peek() :
+    global SIZE, queue, front, rear
+    if (isQueueEmpty()) :
+        print('큐 텅~~')
+        return None
+    return queue[front+1]
+
+## 전역
+SIZE = 5
+queue = [None for _ in range(SIZE)]
+front = rear = 0
+
+## 메인
+
+enQueue('화사')
+enQueue('솔라')
+enQueue('문별')
+enQueue('휘인')
+enQueue('선미') # 원더걸스
+print('출구<--', queue, '<--입구')
+
+retData = deQueue()
+print("디큐 ==> ", retData)
+retData = deQueue()
+print("디큐 ==> ", retData)
+print('출구<--', queue, '<--입구')
+
+enQueue('재남')
+print('출구<--', queue, '<--입구')
+
+enQueue('길동')
+print('출구<--', queue, '<--입구')
+
+enQueue('소희')
+print('출구<--', queue, '<--입구')
+```
+
+---
+
+# 8. 이진 트리
+
+## 이진 트리의 기본
+
+### 이진 트리의 개념
+
+- 트리(Tree) 자료구조는 나무를 거꾸로 뒤집어 놓은 형태
+- 트리 자료구조 용어
+    - 부모 노드, 자식 노드, 리프 노드, 루트, 에지, 차수
+
+## 이진 탐색 트리의 구현
+
+- 이진 탐색 트리의 생성
+
+```python
+## 함수
+class TreeNode():
+    def __init__(self):
+        self.left = None
+        self.data = None
+        self.right = None
+
+## 전역
+
+## 메인
+node1 = TreeNode()
+node1.data = '화사'
+
+node2 = TreeNode()
+node2.data = '솔라'
+node1.left = node2
+
+node3 = TreeNode()
+node3.data = '문별'
+node1.right = node3
+
+node4 = TreeNode(); node4.data = '휘인'; node2.left = node4
+node5 = TreeNode(); node5.data = '쯔위'; node2.right = node5
+node6 = TreeNode(); node6.data = '선미'; node3.left = node6
+
+print(node1.data)
+print(node1.left.data,"\t",node1.right.data)
+print(node1.left.left.data, "\t", node1.left.right.data, "\t", node1.right.left.data)
+```
+
+- 이진 탐색 트리 일반 구현/탐색
+
+```python
+## 함수
+class TreeNode():
+    def __init__(self):
+        self.left = None
+        self.data = None
+        self.right = None
+
+## 전역
+memory = []
+root = None
+nameAry = ['블랙핑크', '레드벨벳', '마마무', '에이핑크', '걸스데이', '트와이스']
+
+## 메인
+# 루트 노드 만들기
+node = TreeNode()
+node.data = nameAry[0]
+root = node
+memory.append(node)
+
+for name in nameAry[1:]:    # ['레드벨벳', '마마무', ... ]
+    node = TreeNode()
+    node.data = name
+
+    current = root  # root 10이고, name이 6
+    while True:
+        if name < current.data:
+            if current.left == None:
+                current.left = node
+                break
+            current = current.left
+        else:
+            if current.right == None:
+                current.right = node
+                break
+            current = current.right
+
+    memory.append(node)
+
+print('이진 탐색 트리 구성 완료!')
+
+findData = '마마무'
+
+current = root
+while True:
+    if findData == current.data:
+        print(findData,"찾음")
+        break
+    elif findData < current.data:
+        if current.left == None:
+            print(findData,"없음")
+            break
+        current = current.left
+    else:
+        if current.right == None:
+            print(findData, "없음")
+            break
+        current = current.right
+```
+
+# 그래프
+
+## 그래프의 기본
+
+### 그래프의 개념
+
+- 여러 노드가 서로 연결된 구조
+- 그래프 종류
+    - 무방향 그래프
+    - 방향 그래프
+- 깊이 우선 탐색의 작동
+    - 그래프의 모든 정점을 한 번씩 방문하는 것을 그래프 순회라고 함
+    - 그래프 순회 방식은 깊이 우선 탐색, 너비 우선 탐색이 대표적
+- 그래프의 인접 행렬 표현
+    - 그래프를 코드로 구현할 때는 인접 행렬을 사용
+    - 인접 행렬은 정방형으로 구성된 행렬로 정점이 4개인 그래프는 4X4로 표현
