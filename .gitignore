@@ -1,8 +1,11 @@
 # MJ add
+Q1-1.py
 *.pdf
 *.xml
 *.iml
 .idea
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
